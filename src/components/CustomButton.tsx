@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import styled from 'styled-components'
-import Colors from './../styles/colors'
+import Colors from '../styles/colors'
 
 interface Props {
     color?: string;
@@ -16,7 +16,7 @@ interface Props {
     onClick?: () => void;
 }
 
-export default function CustomButton({ hoverFontColor, border, fontWeight, backgroundColor, color, width, height, content, fontSize, hoverColor, onClick }: Props): ReactElement {
+export default function CustomButton({ hoverFontColor, border, fontWeight, backgroundColor, color, width, height, content, fontSize, hoverColor, onClick, ...rest }: Props): ReactElement {
     return (
         <Button hoverFontColor={hoverFontColor} border={border} fontWeight={fontWeight} onClick={onClick} width={width} height={height} color={color} backgroundColor={backgroundColor} fontSize={fontSize} hoverColor={hoverColor}>{content}</Button>
     )

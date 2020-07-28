@@ -1,2 +1,6 @@
 export { default as Navbar } from "./Navbar"
 export { default as CustomButton } from "./CustomButton"
+export { default as Modal } from "./Modal"
+export { default as LoginForm } from "./LoginForm"
+export { default as RegisterForm } from "./RegisterForm"
+export { default as StackAdder } from "./StackAdder"

@@ -1,29 +1,33 @@
 import React from 'react'
 import styled from "styled-components"
 import { CustomButton } from "."
-import Colors from "./../styles/colors"
-import { Link } from 'react-router-dom'
+import Colors from "../styles/colors"
+import { Link, useHistory } from 'react-router-dom'
 
-const loginButtonOptions = {
-    backgroundColor: "#fff",
-    width: "120px",
-    height: "45px",
-    content: "로그인",
-    fontSize: "20px",
-    fontWeight: "300",
-    color: `${Colors.deepGray}`,
-    hoverColor: "#fff",
-}
 
-const registerButtonOptions = {
-    backgroundColor: `${Colors.grape}`,
-    width: "120px",
-    height: "45px",
-    content: "회원가입",
-    fontSize: "20px",
-    hoverColor: `${Colors.lightGrape}`
-}
-export default function Navbar() {
+const Navbar: React.FC = () => {
+    const history = useHistory()
+    const loginButtonOptions = {
+        backgroundColor: "#fff",
+        width: "120px",
+        height: "45px",
+        content: "로그인",
+        fontSize: "20px",
+        fontWeight: "300",
+        color: `${Colors.deepGray}`,
+        hoverColor: "#fff",
+        onClick: () => { history.push("/login") }
+    }
+
+    const registerButtonOptions = {
+        backgroundColor: `${Colors.grape}`,
+        width: "120px",
+        height: "45px",
+        content: "회원가입",
+        fontSize: "20px",
+        hoverColor: `${Colors.lightGrape}`,
+        onClick: () => { history.push("/register") }
+    }
     return (
         <Container>
             <InnerContainer>
@@ -53,7 +57,7 @@ const InnerContainer = styled.div`
 `
 
 const Logo = styled.section`
-    font-size: 48px;
+    font-size: 45px;
     cursor: pointer;
 
     @media (max-width: 980px){
@@ -71,3 +75,5 @@ const AuthSection = styled.section`
        }
    }
 `
+
+export default Navbar;
