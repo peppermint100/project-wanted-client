@@ -43,7 +43,7 @@ const Navbar: React.FC = () => {
 
 const Container = styled.nav`
     width:100%;
-    height: 9vh;
+    height: 100px;
     box-shadow: 0 0.5px 10px rgba(0, 0, 0, 0.15);
     `
 
