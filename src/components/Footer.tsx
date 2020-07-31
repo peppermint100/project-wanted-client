@@ -9,7 +9,7 @@ interface Props {
 const Footer: React.FC<Props> = ({ usecase }) => {
     return (
         <Container usecase={usecase}>
-            Hello I'm Footer
+
         </Container>
     )
 }
@@ -26,8 +26,8 @@ const Container = styled.footer<styledProps>`
     bottom: 0;
     ${props => props.usecase === "register" ?
         css`
-        position: static;
-    `
+            position: static;
+        `
         : null
     }
 `

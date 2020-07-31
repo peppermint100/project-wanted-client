@@ -1,5 +1,5 @@
 import React from 'react'
-import { FieldArrayRenderProps, Field, FieldAttributes } from "formik"
+import { FieldArrayRenderProps, Field } from "formik"
 import styled from 'styled-components'
 import Colors from '../styles/colors';
 
@@ -47,6 +47,8 @@ export default StackAdder
 
 
 const Container = styled.div`
+    display:flex;
+    flex-direction: column;
 `
 const CustomInput = styled.input`
     border :1.5px solid ${Colors.lightGray};
@@ -66,6 +68,7 @@ const CustomInput = styled.input`
 const CustomButton = styled.button`
     width: 400px;
     height: 40px;
+    margin-left: 10px;
     background-color: ${Colors.grape};
     text-align: center;
     font-size: 18px;

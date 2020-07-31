@@ -1,11 +1,22 @@
-import React from 'react'
-import { Navbar } from "./../components"
+import React, { useEffect } from 'react'
+import { Navbar, Footer, CheckAuth } from "./../components"
+import styled from 'styled-components'
 
 export default function Home() {
+
     return (
-        <div>
+        <Container>
+            <CheckAuth />
             <Navbar />
-            Home
-        </div>
+            <div style={{ paddingBottom: "200px" }}>
+                contentfeawkfew
+            </div>
+            <Footer />
+        </Container>
     )
 }
+
+const Container = styled.div`
+    position: relative;
+    min-height: 100vh;
+`

@@ -1,18 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik } from "formik"
 import styled from 'styled-components';
 import Colors from '../styles/colors';
+import axios from "axios"
+import env from "./../env"
+import { useHistory } from "react-router-dom"
+import { HelperText } from "."
 
 function LoginForm() {
+    const history = useHistory()
+    const [loginHelperText, setLoginHelperText] = useState<string>("")
+
     return (
         <>
             <Formik initialValues={{ email: "", password: "" }} onSubmit={(data, { setSubmitting }) => {
                 setSubmitting(true)
-                console.log(data)
+                const { email, password } = data
+                axios.post(`${env.ENDPOINT}/api/auth/login`, { email, password })
+                    .then(res => {
+                        const { token, user: { userId, username, email, role, skills } } = res.data
+                        window.localStorage.setItem("userId", userId)
+                        window.localStorage.setItem("username", username)
+                        window.localStorage.setItem("token", token)
+                        window.localStorage.setItem("email", email)
+                        window.localStorage.setItem("role", role)
+                        window.localStorage.setItem("skills", skills)
+                        history.push('/')
+                    }).catch(err => {
+                        if (err) {
+                            setLoginHelperText(err.response.data.err)
+                        }
+                    })
                 setSubmitting(false)
             }}>
                 {
-                    ({ values, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+                    ({ values, handleChange, handleSubmit, isSubmitting }) => (
                         <Form onSubmit={handleSubmit}>
                             <div>
                                 <Label>이메일</Label>
@@ -21,6 +43,7 @@ function LoginForm() {
                             <div>
                                 <Label>비밀번호</Label>
                                 <CustomInput type="password" name="password" value={values.password} onChange={handleChange} />
+                                <HelperText text={loginHelperText} />
                             </div>
                             <CustomButton type="submit" disabled={isSubmitting}>로그인</CustomButton>
                         </Form>
@@ -56,6 +79,9 @@ const CustomInput = styled.input`
     &::placeholder{
         font-size:18px;
         color: #a4b0be;
+    }
+    &:focus{
+        border-color: ${Colors.grape};
     }
 `
 

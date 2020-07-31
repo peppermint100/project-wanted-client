@@ -8,5 +8,7 @@ export default {
     newBlue: "#1e90ff",
     mainBlue: "#25CCF7",
     grape: "#6c5ce7",
-    lightGrape: "#a29bfe"
+    lightGrape: "#a29bfe",
+    lightGray: "#dfe6e9",
+    midnightBlue: "#2c3e50"
 }

@@ -1,12 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from "styled-components"
 import { CustomButton } from "."
 import Colors from "../styles/colors"
 import { Link, useHistory } from 'react-router-dom'
-
+import { useDispatch, useSelector } from "react-redux"
+import { RootReducerType } from '../redux/reducers/rootReducers'
+import { clearUserInfo } from '../redux/actions/authActions'
 
 const Navbar: React.FC = () => {
     const history = useHistory()
+    const dispatch = useDispatch()
+    const userInfo = useSelector((state: RootReducerType) => state.authReducer);
+
+    const handleLogout = () => {
+        window.localStorage.clear();
+        dispatch(clearUserInfo())
+        history.push("/login")
+    }
     const loginButtonOptions = {
         backgroundColor: "#fff",
         width: "120px",
@@ -28,18 +38,57 @@ const Navbar: React.FC = () => {
         hoverColor: `${Colors.lightGrape}`,
         onClick: () => { history.push("/register") }
     }
+
+    const logoutButtonOptions = {
+        backgroundColor: `${Colors.grape}`,
+        width: "120px",
+        height: "45px",
+        content: "로그아웃",
+        fontSize: "20px",
+        hoverColor: `${Colors.lightGrape}`,
+        onClick: () => { handleLogout() }
+    }
+
+
+    useEffect(() => {
+    }, [userInfo])
     return (
         <Container>
             <InnerContainer>
                 <Logo><Link to="/"><span role="img" aria-label="logo">🔥</span></Link></Logo>
                 <AuthSection>
-                    <CustomButton {...loginButtonOptions} />
-                    <CustomButton {...registerButtonOptions} />
+                    {userInfo.authenticated ?
+                        <>
+                            <UserNameSection>안녕하세요? <p>{userInfo.username}</p> 님</UserNameSection>
+                            {/* <LogoutSection onClick={handleLogout}>로그아웃</LogoutSection> */}
+                            <CustomButton {...logoutButtonOptions} />
+                        </> :
+                        <>
+                            <CustomButton {...loginButtonOptions} />
+                            <CustomButton {...registerButtonOptions} />
+                        </>
+                    }
                 </AuthSection>
             </InnerContainer>
-        </Container>
+        </Container >
     )
 }
+
+const UserNameSection = styled.section`
+    font-size: 20px;
+    color: ${Colors.deepGray};
+    align-self: center;
+    p{
+        color: #000;
+        display:inline;
+        text-transform: uppercase;
+        font-weight: 700;
+        &:hover{
+            opacity: .8;
+            cursor:pointer;
+        }
+    }
+`
 
 const Container = styled.nav`
     width:100%;
@@ -66,6 +115,9 @@ const Logo = styled.section`
 `
 const AuthSection = styled.section`
    display:flex; 
+   section{
+       margin-left:30px;
+   }
    button {
        margin-left:30px;
        @media (max-width: 980px){

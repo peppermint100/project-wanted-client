@@ -1,18 +1,20 @@
-import React from 'react';
-import { Formik, Field, FieldArray, FieldArrayRenderProps } from "formik"
+import React, { useState } from 'react';
+import { Formik, FieldArray } from "formik"
 import styled, { keyframes } from 'styled-components';
 import Colors from '../styles/colors';
 import axios from "axios"
-import env from "./../env"
-import { Radio, FormLabel, RadioGroup, FormControlLabel, makeStyles, RadioProps } from "@material-ui/core"
+import { Radio, FormLabel, RadioGroup, FormControlLabel, makeStyles, RadioProps, FormHelperText } from "@material-ui/core"
 import { withStyles } from "@material-ui/core/styles"
-import { StackAdder } from '.'
+import { StackAdder, HelperText } from '.'
+import env from "./../env"
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
     label: {
         color: `${Colors.midnightBlue}`,
         marginBottom: "5px",
         fontSize: "15px",
+        fontWeight: 700,
     },
 })
 
@@ -26,34 +28,71 @@ const CustomRadio = withStyles({
     checked: {},
 })((props: RadioProps) => <Radio {...props} />);
 
-interface valuesType {
-    email: string
-    password: string
-    confirmPassword: string
-    role: string
-    skills: string[]
-    description: string
-    skill: string
-}
 
 function RegisterForm() {
     const classes = useStyles()
 
+    const history = useHistory()
+
+    const [usernameHelperText, setUsernameHelperText] = useState<string>("")
+    const [skillsHelperText, setSkillsHelperText] = useState<string>("")
+    const [descriptionHelperText, setDescriptionHelperText] = useState<string>("")
+    const [blankHelperText, setBlankHelperText] = useState<string>("")
+
     return (
         <>
-            <Formik initialValues={{ username: "", email: "", password: "", confirmPassword: "", role: "", skills: [], description: "", skill: "" }} onSubmit={async (data, { setSubmitting }) => {
+            <Formik initialValues={{ username: "", email: "", password: "", confirmPassword: "", role: "", skills: [], description: "" }} onSubmit={async (data, { setSubmitting }) => {
                 setSubmitting(true)
+
+                const { username, email, password, confirmPassword, role, skills, description } = data;
+                if (!username || !email || !password || !confirmPassword || !role || skills.length === 0 || !description) {
+                    setBlankHelperText("빈 양식란이 없어야 합니다.")
+                    return;
+                } else {
+                    setBlankHelperText("")
+                }
+                if (usernameHelperText || skillsHelperText || descriptionHelperText || blankHelperText) {
+                    return;
+                }
                 console.log(data)
-                const { email, password, confirmPassword, role, skills, description } = data;
-                // const res = await axios.post(`${env.ENDPOINT}/api/auth/signup`, { email, password })
+                axios.post(`${env.ENDPOINT}/api/auth/signup`, { username, email, password, confirmPassword, role, skills, description })
+                    .then(res => {
+                        if (res && res.data.status !== 200) {
+                            setBlankHelperText(res.data.message.toString())
+                            return;
+                        }
+                        history.push("/login", { successMessage: "이제 로그인이 가능합니다." })
+                    })
+
                 setSubmitting(false)
+            }} validate={values => {
+                const checkUsernameRegExp = new RegExp(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi);
+                if (checkUsernameRegExp.test(values.username)) {
+                    setUsernameHelperText("유저 이름에 특수문자가 포함 될 수 없습니다.")
+                } else {
+                    setUsernameHelperText("")
+                }
+
+                if (values.skills.length >= 6) {
+                    setSkillsHelperText("더 이상 기술을 추가할 수 없습니다.")
+                    values.skills.pop()
+                } else {
+                    setSkillsHelperText("")
+                }
+
+                if (values.description.length >= 100) {
+                    setDescriptionHelperText("본인 소개는 100자 이하로 적어주세요.")
+                } else {
+                    setDescriptionHelperText("")
+                }
             }}>
                 {
                     ({ values, handleChange, handleSubmit, isSubmitting }) => (
                         <Form onSubmit={handleSubmit}>
                             <FormInner>
-                                <Label>유저이름</Label>
+                                <Label>유저 이름</Label>
                                 <CustomInput type="text" name="username" value={values.username} onChange={handleChange} />
+                                <HelperText text={usernameHelperText} />
                             </FormInner>
                             <FormInner>
                                 <Label>이메일</Label>
@@ -72,7 +111,7 @@ function RegisterForm() {
                                 <RadioGroup defaultValue="developer" aria-label="role" name="role">
                                     <FormControlLabel value="developer" control={<CustomRadio name="role" onChange={handleChange} />} label="개발자" />
                                     <FormControlLabel value="designer" control={<CustomRadio name="role" onChange={handleChange} />} label="디자이너" />
-                                    <FormControlLabel value="projectmanager" control={<CustomRadio name="role" onChange={handleChange} />} label="프로젝트 매니저" />
+                                    <FormControlLabel value="projectmanager" control={<CustomRadio name="role" onChange={handleChange} />} label="기획자" />
                                 </RadioGroup>
                             </RoleForm>
                             <RoleForm>
@@ -83,10 +122,13 @@ function RegisterForm() {
                                         <StackAdder skills={values.skills} arrayHelpers={arrayHelpers} />
                                     )}
                                 />
+                                <HelperText text={skillsHelperText} />
                             </RoleForm>
                             <FormInner>
                                 <Label>본인 소개</Label>
                                 <CustomInputTextArea name="description" value={values.description} onChange={handleChange} />
+                                <HelperText text={descriptionHelperText} />
+                                <HelperText text={blankHelperText} />
                             </FormInner>
                             <CustomButton type="submit" disabled={isSubmitting}>회원가입</CustomButton>
                         </Form>
@@ -108,14 +150,10 @@ const shake = keyframes`
 
 const Label = styled.label`
     font-size: 15px;
-    // color: ${Colors.midnightBlue};
-    color: #000;
+    color: ${Colors.deepGray};
+    // color: #000;
     display: block;
-    font-weight: 700;
     margin-bottom: 8px;
-    &:focus{
-       color:#fff; 
-    }
 `
 
 const Form = styled.form`
@@ -145,7 +183,7 @@ const CustomInput = styled.input`
         color: #a4b0be;
     }
     &:focus{
-        border-color: ${Colors.midnightBlue};
+        border-color: ${Colors.grape};
     }
 `
 
@@ -162,14 +200,6 @@ const CustomButton = styled.button`
         transition: opacity .2 ease;
         opacity: .8;
     }
-`
-
-const CustomStackButton = styled(CustomButton)`
-    width: 70px;
-    height: 45px;
-    margin-left: 30px;
-    line-height:45px;
-    
 `
 
 const CustomInputTextArea = styled.textarea`
