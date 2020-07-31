@@ -59,7 +59,7 @@ const Navbar: React.FC = () => {
                 <AuthSection>
                     {userInfo.authenticated ?
                         <>
-                            <UserNameSection>안녕하세요? <p>{userInfo.username}</p> 님</UserNameSection>
+                            <UserNameSection>안녕하세요? <Link to="/mypage">{userInfo.username}</Link> 님</UserNameSection>
                             {/* <LogoutSection onClick={handleLogout}>로그아웃</LogoutSection> */}
                             <CustomButton {...logoutButtonOptions} />
                         </> :
@@ -78,7 +78,7 @@ const UserNameSection = styled.section`
     font-size: 20px;
     color: ${Colors.deepGray};
     align-self: center;
-    p{
+    a{
         color: #000;
         display:inline;
         text-transform: uppercase;

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Navbar, Footer, CheckAuth } from "./../components"
+import { Navbar, Footer, CheckAuth, InnerContainer } from "./../components"
 import styled from 'styled-components'
 
 export default function Home() {
@@ -8,9 +8,9 @@ export default function Home() {
         <Container>
             <CheckAuth />
             <Navbar />
-            <div style={{ paddingBottom: "200px" }}>
+            <InnerContainer>
                 contentfeawkfew
-            </div>
+            </InnerContainer>
             <Footer />
         </Container>
     )
