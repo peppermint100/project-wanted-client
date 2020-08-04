@@ -57,11 +57,9 @@ function RegisterForm() {
                 console.log(data)
                 axios.post(`${env.ENDPOINT}/api/auth/signup`, { username, email, password, confirmPassword, role, skills, description })
                     .then(res => {
-                        if (res && res.data.status !== 200) {
-                            setBlankHelperText(res.data.message.toString())
-                            return;
-                        }
                         history.push("/login", { successMessage: "이제 로그인이 가능합니다." })
+                    }).catch(err => {
+                        if (err) setBlankHelperText(err.response.data.err)
                     })
 
                 setSubmitting(false)

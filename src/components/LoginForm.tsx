@@ -93,5 +93,6 @@ const CustomButton = styled.button`
     font-size: 18px;
     color: #fff;
     border-radius: 5px;
+    cursor: pointer;
 `
 export default LoginForm;
