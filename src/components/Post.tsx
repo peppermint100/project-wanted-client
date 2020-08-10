@@ -1,52 +1,62 @@
 import React from 'react'
 import styled from "styled-components"
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import Colors from "./../styles/colors"
 
-const useStyles = makeStyles({
-    root: {
-        minWidth: "300px",
-        position: "relative"
-    },
-    title: {
-        fontSize: 14,
-    },
-    pos: {
-        marginBottom: 12,
-    },
-});
-export default function Post() {
-    const classes = useStyles()
+
+const Post = () => {
     return (
-        <Container>
-            <Card className={classes.root}>
-                <CardContent>
-                    <Typography className={classes.title} color="textSecondary" gutterBottom>
-                        2020-07-24
-                    </Typography>
-                    <Typography variant="h5" component="h2">
-                        제목
-                    </Typography>
-                    <Typography className={classes.pos} color="textSecondary">
-                        작성자
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                        내용
-                    <br />
-                    </Typography>
-                </CardContent>
-                <CardActions>
-                    <Button size="small">Learn More</Button>
-                </CardActions>
-            </Card>
-        </Container>
+        <Card>
+            <CardContent>
+                <CreatedAt>
+                    2020-07-24
+                    </CreatedAt>
+                <Title>
+                    제목
+                    </Title>
+                <Owner>
+                    작성자
+                    </Owner>
+                <Content>
+                    내용
+                </Content>
+                <br />
+                <WantedSkills>
+
+                </WantedSkills>
+            </CardContent>
+        </Card>
     )
 }
 
-const Container = styled.div`
 
+const Card = styled.div`
+    width: 300px;
+    height: 200px;
+    box-shadow: .5px .5px 2px ${Colors.deepGray};
 `
+const CardContent = styled.div`
+    margin: 10px;
+`
+const CreatedAt = styled.p`
+    color: ${Colors.deepGray};
+    font-size: 15px;
+`
+const Title = styled.p`
+    font-size: 24px;
+    font-weight: 700;
+`
+const Content = styled.div`
+    font-size: 18px;
+`
+const Owner = styled.p`
+    font-size: 15px; 
+    color: ${Colors.deepGray};
+`
+
+const WantedSkills = styled.div`
+    
+`
+
+
+
+export default Post;

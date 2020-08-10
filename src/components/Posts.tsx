@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Post, NewPostCreateButton, useModal, NewPostModal } from "."
 import styled from "styled-components"
-export default function Posts() {
 
+export default function Posts() {
     const { isShowing, toggle } = useModal()
 
     return (
@@ -28,6 +28,7 @@ const Wrapper = styled.div`
 width: 80%;
 margin: 0 auto;
 padding-bottom: 230px;
+
 `
 
 const PostsContainer = styled.main`

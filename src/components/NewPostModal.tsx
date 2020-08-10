@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import styled from 'styled-components'
-import { ModalContainer } from "."
+import { ModalContainer, MyPageForm } from "."
+import colors from '../styles/colors'
 
 interface Props {
     isShowing: boolean
@@ -31,16 +32,15 @@ const NewPostModal: React.FC<Props> = ({ isShowing, hide }) => {
         }
         if (current !== null && isShowing) {
             current.style.transition = "all .3s ease-in-out"
-            // current.style.transform = "scale(1, 1)"
             current.style.opacity = "1"
         }
     }, [isShowing])
 
     return (
         <ModalContainer isShowing={isShowing} hide={hide}>
-            {/* {isShowing ? <Container ref={modalRef} top={currentPosition.top} left={currentPosition.left} > new Post creating...</Container> : null} */}
-
-            <Container ref={modalRef} top={currentPosition.top} left={currentPosition.left} > new Post creating...</Container>
+            <Container ref={modalRef} top={currentPosition.top} left={currentPosition.left} >
+                <MyPageForm />
+            </Container>
         </ModalContainer>
     )
 
@@ -57,13 +57,14 @@ const Container = styled.div<ModalStyledProps>`
     position: absolute;
     top: ${props => props.top}px;
     left:  ${props => props.left}px;
-    background-color: #000;
-    color: #fff;
-    z-index: 10;
+    z-index: 30;
     transform: translate(-400px, -400px);
     opacity: 0;
-    // transform: scale(0, 0);
-
+    background-color: #fff;
+    box-shadow: .5px 0 8px ${colors.deepGray};
+    display: flex;
+    justify-content: center;
+    align-items: center;
     @media (max-width: 980px){
         width: 500px;
         height: 500px;

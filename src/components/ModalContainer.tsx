@@ -13,7 +13,6 @@ const ModalContainer: React.FC<Props> = ({ children, hide, isShowing }) => {
     const handleClick = (e: any) => {
         const { current } = containerRef
         if (current !== null && isShowing && !current.contains(e.target)) {
-            console.log('ok!')
             hide()
         }
     }
@@ -40,6 +39,8 @@ const ModalContainer: React.FC<Props> = ({ children, hide, isShowing }) => {
 }
 
 
-const Container = styled.div``
+const Container = styled.div`
+    
+`
 
 export default ModalContainer

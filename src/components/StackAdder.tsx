@@ -28,7 +28,6 @@ const StackAdder: React.FC<Props> = ({ skills, arrayHelpers }) => {
                             >
                                 <span role="img" aria-label="delete">✂</span>
                             </CustomUpdateButton>
-
                         </div>
                     ))
                 ) : (

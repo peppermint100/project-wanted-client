@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
 import env from "./../env"
 import axios from "axios"
-import { useDispatch } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { setUserInfo } from '../redux/actions/authActions'
 import { useHistory } from "react-router-dom"
+import { RootReducerType } from '../redux/reducers/rootReducers'
+
 
 const CheckAuth = () => {
     const email = window.localStorage.getItem("email")
@@ -11,6 +13,8 @@ const CheckAuth = () => {
 
     const dispatch = useDispatch()
     const history = useHistory()
+
+    const isShowing = useSelector((state: RootReducerType) => state.modalReducer);
 
     const getAuth = async () => {
         try {
@@ -27,12 +31,11 @@ const CheckAuth = () => {
             window.localStorage.clear()
             history.push("/login")
         }
-
     }
 
     useEffect(() => {
         getAuth()
-    }, [email, token])
+    }, [email, token, isShowing])
 
     return null;
 }

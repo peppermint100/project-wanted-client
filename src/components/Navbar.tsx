@@ -6,11 +6,16 @@ import { Link, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux"
 import { RootReducerType } from '../redux/reducers/rootReducers'
 import { clearUserInfo } from '../redux/actions/authActions'
+import { setModalState } from '../redux/actions/modalAction'
 
 const Navbar: React.FC = () => {
     const history = useHistory()
     const dispatch = useDispatch()
     const userInfo = useSelector((state: RootReducerType) => state.authReducer);
+
+    const openMyPageModal = () => {
+        dispatch(setModalState());
+    }
 
     const handleLogout = () => {
         window.localStorage.clear();
@@ -51,6 +56,7 @@ const Navbar: React.FC = () => {
 
 
     useEffect(() => {
+
     }, [userInfo])
     return (
         <Container>
@@ -59,7 +65,7 @@ const Navbar: React.FC = () => {
                 <AuthSection>
                     {userInfo.authenticated ?
                         <>
-                            <UserNameSection>안녕하세요? <Link to="/mypage">{userInfo.username}</Link> 님</UserNameSection>
+                            <UserNameSection>안녕하세요?<button onClick={openMyPageModal}>{userInfo.username}</button> 님</UserNameSection>
                             {/* <LogoutSection onClick={handleLogout}>로그아웃</LogoutSection> */}
                             <CustomButton {...logoutButtonOptions} />
                         </> :
@@ -78,10 +84,10 @@ const UserNameSection = styled.section`
     font-size: 20px;
     color: ${Colors.deepGray};
     align-self: center;
-    a{
+    button{
         color: #000;
-        display:inline;
         text-transform: uppercase;
+        margin-left: 13px !important;
         font-weight: 700;
         &:hover{
             opacity: .8;
@@ -115,9 +121,7 @@ const Logo = styled.section`
 `
 const AuthSection = styled.section`
    display:flex; 
-   section{
-       margin-left:30px;
-   }
+   
    button {
        margin-left:30px;
        @media (max-width: 980px){

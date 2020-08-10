@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Formik, FieldArray, setNestedObjectValues } from "formik"
+import { Formik, FieldArray } from "formik"
 import styled, { keyframes } from 'styled-components';
 import Colors from '../styles/colors';
 import axios from "axios"
@@ -10,6 +10,9 @@ import env from "./../env"
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux"
 import { RootReducerType } from '../redux/reducers/rootReducers';
+import { useDispatch } from "react-redux"
+import { setModalState } from '../redux/actions/modalAction';
+import { setUserInfo } from '../redux/actions/authActions';
 
 const useStyles = makeStyles({
     label: {
@@ -32,7 +35,6 @@ const CustomRadio = withStyles({
 
 interface FormValues {
     username: string;
-    email: string;
     role: string;
     skills: never[];
     description: string;
@@ -42,15 +44,15 @@ function MyPageForm() {
     const classes = useStyles()
     const history = useHistory()
     const currentUser = useSelector((state: RootReducerType) => state.authReducer)
-
+    const dispatch = useDispatch()
     const [initialFormValues, setInitialFormValues] = useState<FormValues>({
         username: "",
-        email: "",
         role: "",
         skills: [],
         description: ""
     })
 
+    const [resultHelperText, setResultHelperText] = useState<string>("")
     const [usernameHelperText, setUsernameHelperText] = useState<string>("")
     const [skillsHelperText, setSkillsHelperText] = useState<string>("")
     const [descriptionHelperText, setDescriptionHelperText] = useState<string>("")
@@ -59,8 +61,8 @@ function MyPageForm() {
     const getUserInfo = async () => {
         axios.post(`${env.ENDPOINT}/api/user/getuserinfo`, { userId: JSON.parse(window.localStorage.userId) })
             .then(res => {
-                const { username, email, role, skills, description } = res.data
-                setInitialFormValues({ username, email, role, skills, description })
+                const { username, role, skills, description } = res.data
+                setInitialFormValues({ username, role, skills, description })
             })
     }
 
@@ -70,12 +72,13 @@ function MyPageForm() {
 
     return (
         <>
-            {initialFormValues.username && initialFormValues.email ?
-                <Formik initialValues={{ username: initialFormValues.username, email: initialFormValues.email, password: "", confirmPassword: "", role: initialFormValues.role, skills: initialFormValues.skills, description: initialFormValues.description }}
+            {initialFormValues.username ?
+                <Formik initialValues={{ username: initialFormValues.username, role: initialFormValues.role, skills: initialFormValues.skills, description: initialFormValues.description }}
                     onSubmit={async (data, { setSubmitting }) => {
                         setSubmitting(true)
-                        const { username, email, password, confirmPassword, role, skills, description } = data;
-                        if (!username || !email || !password || !confirmPassword || !role || skills.length === 0 || !description) {
+                        console.log('submitting..')
+                        const { username, role, skills, description } = data;
+                        if (!username || !role || skills.length === 0 || !description) {
                             setBlankHelperText("빈 양식란이 없어야 합니다.")
                             return;
                         } else {
@@ -84,12 +87,22 @@ function MyPageForm() {
                         if (usernameHelperText || skillsHelperText || descriptionHelperText || blankHelperText) {
                             return;
                         }
-                        console.log(data)
-                        axios.post(`${env.ENDPOINT}/api/user/updatestatus`, { username, email, password, confirmPassword, role, skills, description })
+                        console.log(currentUser)
+                        axios.post(`${env.ENDPOINT}/api/user/updatestatus`, { userId: window.localStorage.getItem("userId"), username, role, skills, description })
                             .then(res => {
-                                history.push("/", { successMessage: "정보 수정이 완료 되었습니다." })
+                                console.log(res)
+                                window.localStorage.setItem("username", username)
+                                window.localStorage.setItem("role", role)
+                                window.localStorage.setItem("skills", JSON.stringify(skills))
+                                const user = res.data.user
+                                dispatch(setModalState())
+                                dispatch(setUserInfo(user))
+                                setResultHelperText("변경이 완료되었습니다.")
                             }).catch(err => {
-                                if (err) setBlankHelperText(err.response.data.err)
+                                if (err && err.response) {
+                                    console.log(err.response)
+                                    setBlankHelperText(err.response.data.message)
+                                }
                             })
 
                         setSubmitting(false)
@@ -120,21 +133,10 @@ function MyPageForm() {
                         ({ values, handleChange, handleSubmit, isSubmitting }) => (
                             <Form onSubmit={handleSubmit}>
                                 <FormInner>
+                                    <HelperText text={resultHelperText} />
                                     <Label>유저 이름</Label>
                                     <CustomInput type="text" name="username" value={values.username} onChange={handleChange} />
                                     <HelperText text={usernameHelperText} />
-                                </FormInner>
-                                <FormInner>
-                                    <Label>이메일</Label>
-                                    <CustomInput type="email" name="email" value={values.email} onChange={handleChange} />
-                                </FormInner>
-                                <FormInner>
-                                    <Label>비밀번호</Label>
-                                    <CustomInput type="password" name="password" value={values.password} onChange={handleChange} />
-                                </FormInner>
-                                <FormInner>
-                                    <Label>비밀번호 확인</Label>
-                                    <CustomInput type="password" name="confirmPassword" value={values.confirmPassword} onChange={handleChange} />
                                 </FormInner>
                                 <RoleForm>
                                     <FormLabel className={classes.label} component="legend">포지션</FormLabel>
