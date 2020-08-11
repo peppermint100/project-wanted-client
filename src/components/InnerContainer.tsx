@@ -12,7 +12,7 @@ const InnerContainer = ({ children }: { children: any }) => {
 }
 
 const Wrapper = styled.div`
-    paddingBottom:200px;
+    padding-bottom: 100px;
 `
 
 export default InnerContainer

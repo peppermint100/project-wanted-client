@@ -5,15 +5,13 @@ import Colors from '../styles/colors'
 import { useSelector } from "react-redux"
 import { RootReducerType } from '../redux/reducers/rootReducers'
 
-
 export default function Home() {
     const isShowing = useSelector((state: RootReducerType) => state.modalReducer)
     const buttonRef = useRef<HTMLElement>(null)
     const [postsShowing, setPostsShowing] = useState<boolean>(true)
 
-
     const showPosts = () => {
-        setPostsShowing(postsShowing => { return !postsShowing })
+        setPostsShowing(postsShowing => !postsShowing)
     }
 
     const buttonOptions = {

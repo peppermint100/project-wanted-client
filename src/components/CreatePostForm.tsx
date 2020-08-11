@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Formik, FieldArray, setNestedObjectValues } from "formik"
-import styled, { keyframes } from 'styled-components';
+import { Formik, FieldArray } from "formik"
+import styled from 'styled-components';
 import Colors from '../styles/colors';
 import axios from "axios"
-import { Radio, FormLabel, RadioGroup, FormControlLabel, makeStyles, RadioProps, FormHelperText } from "@material-ui/core"
+import { Radio, makeStyles, RadioProps, FormHelperText } from "@material-ui/core"
 import { withStyles } from "@material-ui/core/styles"
 import { StackAdder, HelperText } from '.'
 import env from "./../env"
@@ -89,9 +89,7 @@ function CreatePostForm() {
                         return;
                     }
 
-                    await axios.post(`${env.ENDPOINT}/api/post/create`, { title, content, wantedSkills: skills, devNeeded, pmNeeded, designNeeded, owner: currentUser.username }).then(res => console.log(res));
-                    history.push("/")
-
+                    await axios.post(`${env.ENDPOINT}/api/post/create`, { title, content, wantedSkills: skills, devNeeded, pmNeeded, designNeeded, owner: currentUser.username })
                     setSubmitting(false)
 
                 }} validate={values => {
@@ -109,8 +107,8 @@ function CreatePostForm() {
                         setSkillsHelperText("")
                     }
 
-                    if (values.content.length >= 100) {
-                        setDescriptionHelperText("상세 설명은 100자 이하로 적어주세요.")
+                    if (values.content.length >= 300) {
+                        setDescriptionHelperText("상세 설명은 300자 이하로 적어주세요.")
                     } else {
                         setDescriptionHelperText("")
                     }

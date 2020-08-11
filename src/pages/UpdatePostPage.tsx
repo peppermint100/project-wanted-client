@@ -1,10 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from "styled-components"
-import { Navbar, CreatePostForm, CheckAuth, CustomButton, Footer } from "./../components"
-import Colors from "./../styles/colors"
+import { Navbar, UpdatePostForm, CheckAuth, Footer } from "./../components"
 
-
-function CreatePostPage() {
+function UpdatePostPage() {
     return (
         <Wrapper>
             <CheckAuth />
@@ -12,7 +10,7 @@ function CreatePostPage() {
             <Container>
                 <InnerContainer>
                     <Header><span role="img" aria-label="register">🎪</span>   모집 공고 작성</Header>
-                    <CreatePostForm />
+                    <UpdatePostForm />
                 </InnerContainer>
             </Container>
             <Footer usecase="register" />
@@ -46,4 +44,5 @@ const Header = styled.div`
    font-size: 32px;
    
 `
-export default CreatePostPage
+export default UpdatePostPage
+

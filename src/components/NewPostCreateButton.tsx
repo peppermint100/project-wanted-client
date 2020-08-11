@@ -7,10 +7,9 @@ import { useHistory } from "react-router-dom"
 
 interface Props {
     isShowing: boolean
-    hide: () => void
 }
 
-const NewPostCreateButton: React.FC<Props> = ({ isShowing, hide }) => {
+const NewPostCreateButton: React.FC<Props> = ({ isShowing }) => {
 
     const history = useHistory()
     return (
