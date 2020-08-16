@@ -26,6 +26,9 @@ function UpdatePostForm() {
     const [blankHelperText, setBlankHelperText] = useState<string>("")
 
     useEffect(() => {
+        if (currentUser.userId !== postDetails.ownerId) {
+            history.push("/")
+        }
     }, [currentUser])
 
     return (
@@ -61,6 +64,7 @@ function UpdatePostForm() {
                                 setBlankHelperText(`${err.response.data.message}`)
                             }
                         }
+                        history.push("/", { state: "글 수정 완료" })
                         setSubmitting(false)
 
                     }} validate={values => {

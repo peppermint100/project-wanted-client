@@ -15,7 +15,7 @@ const OwnerById: React.FC<Props> = ({ ownerId }) => {
         getUserById()
     }, [])
     return (
-        <p>{owner}</p>
+        <>{owner}</>
     )
 }
 

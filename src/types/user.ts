@@ -1,5 +1,6 @@
 import { Role } from '../types/role';
-export interface updateStatusRequest {
+
+export interface User {
     userId: number;
     skills?: string[];
     username?: string;

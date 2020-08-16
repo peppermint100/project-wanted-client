@@ -7,7 +7,7 @@ import { Radio, makeStyles, RadioProps, FormHelperText } from "@material-ui/core
 import { withStyles } from "@material-ui/core/styles"
 import { StackAdder, HelperText } from '.'
 import env from "./../env"
-import { useHistory } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 import { useSelector } from "react-redux"
 import { RootReducerType } from '../redux/reducers/rootReducers';
 
@@ -90,6 +90,7 @@ function CreatePostForm() {
                     }
 
                     await axios.post(`${env.ENDPOINT}/api/post/create`, { title, content, wantedSkills: skills, devNeeded, pmNeeded, designNeeded, owner: currentUser.username })
+                    history.push("/", { state: "글 작성 완료" })
                     setSubmitting(false)
 
                 }} validate={values => {

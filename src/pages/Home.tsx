@@ -1,14 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Navbar, Footer, CheckAuth, Jumbotron, InnerContainer, CustomButton, StartButton, Posts, BlurringLayer } from "./../components"
+import { Navbar, Footer, CheckAuth, Jumbotron, InnerContainer, CustomButton, Posts, BlurringLayer, HelperText, ToApplicationManagerButton } from "./../components"
 import styled, { css } from 'styled-components'
 import Colors from '../styles/colors'
 import { useSelector } from "react-redux"
 import { RootReducerType } from '../redux/reducers/rootReducers'
+import { useLocation } from "react-router-dom"
+
+interface LocationProps {
+    message: string;
+}
 
 export default function Home() {
     const isShowing = useSelector((state: RootReducerType) => state.modalReducer)
     const buttonRef = useRef<HTMLElement>(null)
     const [postsShowing, setPostsShowing] = useState<boolean>(true)
+
+    const location = useLocation<LocationProps>()
 
     const showPosts = () => {
         setPostsShowing(postsShowing => !postsShowing)
@@ -37,12 +44,20 @@ export default function Home() {
         }
     })
 
+    useEffect(() => {
+        if (location.state && location.state.message) {
+            window.alert(location.state.message)
+            window.history.replaceState(null, "/")
+        }
+    })
+
 
     return (
         <Container isShowing={isShowing}>
             <BlurringLayer isShowing={isShowing}>
                 <CheckAuth />
                 <Navbar />
+                <ToApplicationManagerButton isShowing={isShowing} />
                 <InnerContainer>
                     <JumboSection>
                         <Jumbotron />

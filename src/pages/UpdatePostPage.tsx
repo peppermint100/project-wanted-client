@@ -9,7 +9,7 @@ function UpdatePostPage() {
             <Navbar />
             <Container>
                 <InnerContainer>
-                    <Header><span role="img" aria-label="register">🎪</span>   모집 공고 작성</Header>
+                    <Header><span role="img" aria-label="edit">⚙</span>   공고 수정</Header>
                     <UpdatePostForm />
                 </InnerContainer>
             </Container>

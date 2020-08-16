@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
-import { Home, Login, Register, NotFound, MyPage, CreatePostPage, PostDetailPage, UpdatePostPage } from '../pages'
+import { Home, Login, Register, NotFound, MyPage, CreatePostPage, PostDetailPage, UpdatePostPage, ApplicationManagerPage } from '../pages'
 
 export default function Routes() {
     return (
@@ -14,6 +14,7 @@ export default function Routes() {
                     <Route path="/create" exact component={CreatePostPage} />
                     <Route path="/update" exact component={UpdatePostPage} />
                     <Route path="/postdetail/:postId" exact component={PostDetailPage} />
+                    <Route path="/application/:userId" exact component={ApplicationManagerPage} />
                     <Route component={NotFound} />
                 </Switch>
             </Router>

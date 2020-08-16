@@ -5,24 +5,27 @@ import Colors from "./../styles/colors"
 interface Props {
     name: string
 }
+
+
 const SkillIcon: React.FC<Props> = ({ name }) => {
     return (
         <Container>
-            {name}
+            #{name}
         </Container>
     )
 }
 
 const Container = styled.div`
-    background-image: linear-gradient(${Colors.grape}, ${Colors.lightGrape});
+    background-color: #dfe6e9;
+    color: #2d3436; 
     line-height: 40px;
-    width: 100px;
-    height: 45px;
-    line-height: 45px;
+    min-width: max-content;
+    width: 110px;
+    height: 40px;
+    line-height: 40px;
     text-align: center;
-    color: #fff;
-    font-size: .8vw;
-    border-radius: 10px;
+    font-size: .7vw;
+    border-radius: 20px;
 `
 
 export default SkillIcon

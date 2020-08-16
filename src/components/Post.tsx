@@ -3,6 +3,7 @@ import styled from "styled-components"
 import Colors from "./../styles/colors"
 import { Link } from "react-router-dom"
 import { SkillIcon, OwnerById } from "."
+import PositionIndicator from './PositionIndicator'
 
 interface Props {
     createdAt: string;
@@ -11,6 +12,9 @@ interface Props {
     content: string;
     wantedSkills: string[]
     postId: number
+    devNeeded: number
+    designNeeded: number
+    pmNeeded: number
 }
 
 const formatDate = (date: string) => date.substring(0, 10)
@@ -19,7 +23,7 @@ const formatContent = (content: string) => {
     return content
 }
 
-const Post: React.FC<Props> = ({ postId, createdAt, title, ownerId, content, wantedSkills }) => {
+const Post: React.FC<Props> = ({ postId, createdAt, title, ownerId, content, wantedSkills, devNeeded, designNeeded, pmNeeded }) => {
     return (
         <Card>
             <CardContent>
@@ -35,6 +39,11 @@ const Post: React.FC<Props> = ({ postId, createdAt, title, ownerId, content, wan
                     {formatContent(content)}
                 </Content>
                 <br />
+                <PositionRecruiting>
+                    {devNeeded > 0 ? (<PositionIndicator role="개발자" />) : null}
+                    {designNeeded > 0 ? (<PositionIndicator role="디자이너" />) : null}
+                    {pmNeeded > 0 ? (<PositionIndicator role="기획자" />) : null}
+                </PositionRecruiting>
                 <Owner><OwnerById ownerId={ownerId} /></Owner>
             </CardContent>
         </Card>
@@ -59,7 +68,7 @@ const CreatedAt = styled.p`
     font-size: 15px;
 `
 const Title = styled.p`
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
     a{
         color: ${Colors.grape};
@@ -67,15 +76,18 @@ const Title = styled.p`
 `
 
 const Content = styled.div`
-    font-size: 18px;
+    font-size: 15px;
 `
 const Owner = styled.p`
-    font-size: 15px; 
+    font-size: 12px; 
     color: ${Colors.deepGray};
 `
 
 const WantedSkills = styled.div`
    display: flex; 
+`
+
+const PositionRecruiting = styled.div`
 `
 
 

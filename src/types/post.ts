@@ -1,3 +1,5 @@
+import { Application } from './application';
+
 export interface PostProps {
     postId: number
     title: string
@@ -11,6 +13,6 @@ export interface PostProps {
     isDone: boolean;
     wantedSkills: string[];
     ownerId: number
-    applications?: any
+    applications?: Application[]
     createdAt: any
 }
