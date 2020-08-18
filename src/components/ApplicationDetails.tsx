@@ -1,23 +1,23 @@
 import React from 'react'
 import { Application } from "./../types/application"
-import axios from "axios"
-import env from "./../env"
-import { HelperText, UserDetails } from "."
+import { UserDetails } from "."
 
 interface Props {
     applications: Application[] | undefined
 }
 
 const ApplicationDetails: React.FC<Props> = ({ applications }) => {
+
+    console.log(applications)
     return (
         <ul>
-            {applications ?
+            {applications && typeof applications !== undefined && applications.length >= 0 ?
                 applications.map((application) => (
                     <li key={application.applicationId}>
                         <UserDetails application={application} />
                     </li>
                 ))
-                : null}
+                : "해당 공고에 아직 지원자가 없습니다."}
         </ul>
     )
 }

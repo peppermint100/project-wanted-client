@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from "react-router-dom"
-import { DefaultContainer, SkillIcon, CustomButton, MyPostsHandler } from "./../components"
+import { DefaultContainer, SkillIcon, HelperText, MyPostsHandler } from "./../components"
 import { PostProps } from '../types/post'
 import axios from "axios"
 import env from "./../env"
@@ -9,8 +9,9 @@ import Colors from "./../styles/colors"
 import clsx from "clsx"
 import { Link } from "react-router-dom"
 import { MyApplication } from '../types/application'
+import { useSelector } from "react-redux"
 
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -18,6 +19,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { RootReducerType } from '../redux/reducers/rootReducers'
+
 const useStyles = makeStyles({
     table: {
         minWidth: 650,
@@ -44,9 +47,6 @@ interface Props {
 
 }
 
-// fetch my post and related applications
-
-// fetch applications that has my userid
 
 const ApplicationManagerPage: React.FC<Props> = () => {
     const classes = useStyles();
@@ -54,6 +54,8 @@ const ApplicationManagerPage: React.FC<Props> = () => {
     const { userId } = useParams()
     const [myPosts, setMyPosts] = useState<PostProps[]>([])
     const [myApplications, setMyApplications] = useState<MyApplication[]>([])
+
+    const myPostHelperText = useSelector((state: RootReducerType) => state.myPostHelperTextReducer)
 
     const getMyPosts = async () => {
         const res = await axios.post(`${env.ENDPOINT}/api/post/getmypostswithapps`, { userId })
@@ -80,7 +82,9 @@ const ApplicationManagerPage: React.FC<Props> = () => {
         <DefaultContainer>
             <InnerContainer>
                 <MyPosts>
-                    <Header>내 공고</Header>
+                    <Header>내 공고
+                        <HelperText text={myPostHelperText} />
+                    </Header>
                     {myPosts.length > 0 ? <MyPostsHandler posts={myPosts} /> : null}
                 </MyPosts>
                 <MyApplications>
