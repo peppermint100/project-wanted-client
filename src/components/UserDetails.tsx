@@ -46,6 +46,7 @@ interface Props {
 const UserDetails: React.FC<Props> = ({ application }) => {
     const [userDetails, setUserDetails] = useState<User | null>(null)
     const classes = useStyles();
+    console.log(application)
 
     const dispatch = useDispatch()
 
@@ -76,6 +77,12 @@ const UserDetails: React.FC<Props> = ({ application }) => {
         backgroundColor: `${Colors.errorRed}`,
         onClick: confirmApplicant
     }
+    const confirmIndicatorButtonOptions = {
+        content: "팀 원",
+        width: '110px',
+        height: "40px",
+        backgroundColor: `${Colors.allowGreen}`,
+    }
 
     useEffect(() => {
         getUserDetails()
@@ -102,7 +109,7 @@ const UserDetails: React.FC<Props> = ({ application }) => {
                                             ))}
                                         </TableCell>
                                     </ul>
-                                    <TableCell className={classes.buttonSection} align="left"><CustomButton {...acceptButtonOptions} /></TableCell>
+                                    <TableCell className={classes.buttonSection} align="left">{application.isAccepted ? <CustomButton {...confirmIndicatorButtonOptions} /> : <CustomButton {...acceptButtonOptions} />} </TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
